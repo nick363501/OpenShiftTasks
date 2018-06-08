@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DemoResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JBoss EAP - Tasks App</a> &gt; <a href="index.source.html" class="el_package">com.openshift.service</a> &gt; <span class="el_source">DemoResource.java</span></div><h1>DemoResource.java</h1><pre class="source lang-java linenums">package com.openshift.service;
+
+import com.openshift.helpers.Load;
+
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * A JAX-RS resource for exposing REST endpoints for Task manipulation
+ */
+@Path(&quot;demo&quot;)
+<span class="nc" id="L21">public class DemoResource {</span>
+	
+	// application instance health
+	// 1 is healthy
+<span class="nc" id="L25">	private static Integer health = 1;</span>
+
+    @GET
+    @Path(&quot;load/{seconds}&quot;)
+    @Produces({&quot;application/json&quot;})
+    public String generateLoad(@Context SecurityContext context, @PathParam(&quot;seconds&quot;) int seconds) {
+<span class="nc" id="L31">        Load cpuLoad = new Load();</span>
+<span class="nc" id="L32">        cpuLoad.generateLoad(seconds * 1000);</span>
+<span class="nc" id="L33">        String response = new String(&quot;Load being generated for &quot; + seconds + &quot; seconds.&quot;);</span>
+<span class="nc" id="L34">        Logger log = Logger.getLogger(DemoResource.class.getName());</span>
+<span class="nc" id="L35">        log.log(Level.INFO, &quot;INFO: Requested to generate load for &quot; + seconds + &quot; seconds.&quot;);</span>
+<span class="nc" id="L36">        return &quot;{\&quot;response\&quot;:\&quot;&quot; + response + &quot;\&quot;}&quot;;</span>
+    }
+
+    @GET
+    @Path(&quot;log/info&quot;)
+    @Produces({&quot;application/json&quot;})
+    public String logInfo(@Context SecurityContext context) {
+<span class="nc" id="L43">        Logger log = Logger.getLogger(DemoResource.class.getName());</span>
+<span class="nc" id="L44">        log.log(Level.INFO, &quot;INFO: OpenShift 3 is an excellent platform for JEE development.&quot;);</span>
+<span class="nc" id="L45">        return new String(&quot;{\&quot;response\&quot;:\&quot;An informational message was recorded internally.\&quot;}&quot;);</span>
+    }
+
+    @GET
+    @Path(&quot;log/warning&quot;)
+    @Produces({&quot;application/json&quot;})
+    public String logWarning(@Context SecurityContext context) {
+<span class="nc" id="L52">        Logger log = Logger.getLogger(DemoResource.class.getName());</span>
+<span class="nc" id="L53">        log.log(Level.WARNING, &quot;WARN: Flying a kite in a thunderstorm should not be attempted.&quot;);</span>
+<span class="nc" id="L54">        return new String(&quot;{\&quot;response\&quot;:\&quot;A warning message was recorded internally.\&quot;}&quot;);</span>
+    }
+
+    @GET
+    @Path(&quot;log/error/&quot;)
+    @Produces({&quot;application/json&quot;})
+    public String logSevere(@Context SecurityContext context) {
+<span class="nc" id="L61">        Logger log = Logger.getLogger(DemoResource.class.getName());</span>
+<span class="nc" id="L62">        log.log(Level.SEVERE, &quot;ERROR: Something pretty bad has happened and should probably be addressed sooner or later.&quot;);</span>
+<span class="nc" id="L63">        return new String(&quot;{\&quot;response\&quot;:\&quot;An internal error has occured!\&quot;}&quot;);</span>
+    }
+
+    // this endpoint will toggle the health of this instance
+    @GET
+    @Path(&quot;togglehealth/&quot;)
+    @Produces({&quot;application/json&quot;})
+    public String togglehealth(@Context SecurityContext context) {
+    	// check if currently healthy, otherwise &quot;become&quot; healthy
+<span class="nc bnc" id="L72" title="All 2 branches missed.">    	if (health == 1) {</span>
+    		// become unhealthy
+<span class="nc" id="L74">    		health = 0;</span>
+<span class="nc" id="L75">    		Logger log = Logger.getLogger(DemoResource.class.getName());</span>
+<span class="nc" id="L76">            log.log(Level.SEVERE, &quot;ERROR: I'm not feeling so well.&quot;);</span>
+<span class="nc" id="L77">            return new String(&quot;{\&quot;response\&quot;:\&quot;The app is starting to look a little ill...\&quot;}&quot;);	</span>
+    	} else {
+    		// become healthy
+<span class="nc" id="L80">    		health = 1;</span>
+<span class="nc" id="L81">    		Logger log = Logger.getLogger(DemoResource.class.getName());</span>
+<span class="nc" id="L82">            log.log(Level.INFO, &quot;INFO: I feel much better.&quot;);</span>
+<span class="nc" id="L83">            return new String(&quot;{\&quot;response\&quot;:\&quot;The app is starting to look great!\&quot;}&quot;);</span>
+    	}
+    }
+
+    @GET
+    @Path(&quot;killswitch/&quot;)
+    @Produces({&quot;application/json&quot;})
+    public void killSwitch(@Context SecurityContext context) throws IOException {
+<span class="nc" id="L91">    	Logger log = Logger.getLogger(DemoResource.class.getName());</span>
+<span class="nc" id="L92">        log.log(Level.SEVERE, &quot;ERROR: Going down NOW!&quot;);</span>
+<span class="nc" id="L93">        Runtime.getRuntime().halt(255);       </span>
+<span class="nc" id="L94">	}</span>
+
+    @GET
+    @Path(&quot;healthcheck/&quot;)
+    @Produces({&quot;application/json&quot;})
+    public Response checkHealth(@Context SecurityContext context) throws IOException {
+    	
+<span class="nc" id="L101">    	String response = new String(&quot;{\&quot;response\&quot;:\&quot;Health Status: &quot; + health + &quot;\&quot;, \&quot;health\&quot;: &quot; + health + &quot;}&quot;);</span>
+
+    	// if health is 1, return 200, otherwise 500
+<span class="nc bnc" id="L104" title="All 2 branches missed.">    	if (health == 1) {</span>
+<span class="nc" id="L105">    		return Response.status(Response.Status.OK).entity(response).build();</span>
+    	} else {
+<span class="nc" id="L107">    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();</span>
+    	}
+    	
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

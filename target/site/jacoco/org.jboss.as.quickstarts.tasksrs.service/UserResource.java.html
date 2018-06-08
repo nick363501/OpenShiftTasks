@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JBoss EAP - Tasks App</a> &gt; <a href="index.source.html" class="el_package">org.jboss.as.quickstarts.tasksrs.service</a> &gt; <span class="el_source">UserResource.java</span></div><h1>UserResource.java</h1><pre class="source lang-java linenums">package org.jboss.as.quickstarts.tasksrs.service;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
+import org.jboss.as.quickstarts.tasksrs.model.User;
+import org.jboss.as.quickstarts.tasksrs.model.UserDao;
+
+/**
+ * A JAX-RS resource for exposing REST endpoints for User manipulation
+ */
+
+@Path(&quot;/users&quot;)
+<span class="nc" id="L20">public class UserResource {</span>
+    @Inject
+    private UserDao userDao;
+
+    @GET
+    @Path(&quot;/&quot;)
+    @Produces({ &quot;application/xml&quot;, &quot;application/json&quot; })
+    public List&lt;User&gt; getUsers() {
+<span class="nc" id="L28">    	List&lt;User&gt; users = userDao.getAll();</span>
+    	
+//		TODO: Uncomment to sort users based on number of tasks
+
+//    	Collections.sort(users, new Comparator&lt;User&gt;() {
+//
+//			@Override
+//			public int compare(User user1, User user2) {
+//				return Integer.compare(user2.getTasks().size(), user1.getTasks().size());
+//			}
+//		});
+    	
+<span class="nc" id="L40">        return users;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

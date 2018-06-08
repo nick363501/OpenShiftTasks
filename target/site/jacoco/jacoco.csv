@@ -1,0 +1,11 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+JBoss EAP - Tasks App,com.openshift.service,DemoResource,180,0,4,0,34,0,11,0,9,0
+JBoss EAP - Tasks App,com.openshift.helpers,Load,34,0,2,0,7,0,3,0,2,0
+JBoss EAP - Tasks App,com.openshift.helpers,Load.BusyThread,43,0,4,0,13,0,4,0,2,0
+JBoss EAP - Tasks App,org.jboss.as.quickstarts.tasksrs.model,User,85,11,14,0,28,4,16,1,9,1
+JBoss EAP - Tasks App,org.jboss.as.quickstarts.tasksrs.model,Resources,14,0,0,0,4,0,3,0,3,0
+JBoss EAP - Tasks App,org.jboss.as.quickstarts.tasksrs.model,UserDaoImpl,35,0,2,0,9,0,5,0,4,0
+JBoss EAP - Tasks App,org.jboss.as.quickstarts.tasksrs.model,TaskDaoImpl,99,0,4,0,21,0,9,0,7,0
+JBoss EAP - Tasks App,org.jboss.as.quickstarts.tasksrs.model,Task,111,16,22,0,32,7,19,4,8,4
+JBoss EAP - Tasks App,org.jboss.as.quickstarts.tasksrs.service,UserResource,9,0,0,0,3,0,2,0,2,0
+JBoss EAP - Tasks App,org.jboss.as.quickstarts.tasksrs.service,TaskResource,41,112,5,5,8,26,9,7,4,7

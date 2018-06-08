@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JBoss EAP - Tasks App</a> &gt; <a href="index.source.html" class="el_package">org.jboss.as.quickstarts.tasksrs.model</a> &gt; <span class="el_source">Task.java</span></div><h1>Task.java</h1><pre class="source lang-java linenums">/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2014, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
+ * distribution for a full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.jboss.as.quickstarts.tasksrs.model;
+
+// JSON: uncomment to include json support (note json is not part of the JAX-RS standard)
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+import java.io.StringReader;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.xml.bind.JAXB;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ * User's task entity which is marked up with JPA annotations and JAXB for serializing XML
+ * (and JSON if required)
+ *
+ * @author Oliver Kiss and others
+ */
+@SuppressWarnings(&quot;serial&quot;)
+@Entity
+@XmlRootElement(name = &quot;task&quot;)
+public class Task implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private User owner;
+
+    private String title;
+
+<span class="nc" id="L57">    public Task() {</span>
+<span class="nc" id="L58">    }</span>
+
+    public Task(String title) {
+<span class="fc" id="L61">        super();</span>
+<span class="fc" id="L62">        this.title = title;</span>
+<span class="fc" id="L63">    }</span>
+
+    @XmlAttribute
+    public Long getId() {
+<span class="fc" id="L67">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="fc" id="L71">        this.id = id;</span>
+<span class="fc" id="L72">    }</span>
+
+    @XmlTransient
+    @JsonIgnore
+    public User getOwner() {
+<span class="nc" id="L77">        return owner;</span>
+    }
+
+    @XmlAttribute
+    public String getOwnerName() {
+<span class="nc" id="L82">        return owner.getUsername();</span>
+    }
+
+    public void setOwner(User owner) {
+<span class="nc" id="L86">        this.owner = owner;</span>
+<span class="nc" id="L87">    }</span>
+
+    @XmlElement
+    public String getTitle() {
+<span class="fc" id="L91">        return title;</span>
+    }
+
+    public void setTitle(String title) {
+<span class="nc" id="L95">        this.title = title;</span>
+<span class="nc" id="L96">    }</span>
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L100">        final int prime = 31;</span>
+<span class="nc" id="L101">        int result = 1;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        result = prime * result + ((owner == null) ? 0 : owner.hashCode());</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        result = prime * result + ((title == null) ? 0 : title.hashCode());</span>
+<span class="nc" id="L104">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L110">            return true;</span>
+        }
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L113">            return false;</span>
+        }
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L116">            return false;</span>
+        }
+<span class="nc" id="L118">        Task other = (Task) obj;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (owner == null) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (other.owner != null) {</span>
+<span class="nc" id="L121">                return false;</span>
+            }
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        } else if (!owner.equals(other.owner)) {</span>
+<span class="nc" id="L124">            return false;</span>
+        }
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (title == null) {</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            if (other.title != null) {</span>
+<span class="nc" id="L128">                return false;</span>
+            }
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        } else if (!title.equals(other.title)) {</span>
+<span class="nc" id="L131">            return false;</span>
+        }
+<span class="nc" id="L133">        return true;</span>
+    }
+
+    public static Task stringToTask(String content) {
+<span class="nc" id="L137">        return JAXB.unmarshal(new StringReader(content), Task.class);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
